@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://pixijs.download/release/pixi.js"></script>
+        <title>Keep the ball on the screen!</title>
+    </head>
+    <body>
+        <script>
+            //Made by Ethan Reddy
+
+            //PRESETS
+            let Gscene = "start"
+            let direction = "nil"
+            let ballSpeed = 1
+            let score = 0
+            let app = new PIXI.Application({ width: 300, height: 500 });
+            document.body.appendChild(app.view);
+
+            //BALL
+            let ball = new PIXI.Graphics();
+            ball.beginFill(0xff0000);
+            ball.drawCircle(150, 250, 30);
+            app.stage.addChild(ball);
+            //START BUTTON
+            let startButton = new PIXI.Graphics();
+            startButton.beginFill(0xff0000);
+            startButton.drawRect(100, 400, 100, 50);
+            app.stage.addChild(startButton);
+            //WHITE COLOR 
+            const whiteText = new PIXI.TextStyle({
+                fill: ['#ffffff'],
+            });
+            //START TEXT
+            const startText = new PIXI.Text('Press the button to start', whiteText);
+            startText.x = 10;
+            startText.y = 100;
+            app.stage.addChild(startText);
+            //SCORE TEXT
+            const scoreText = new PIXI.Text(score, whiteText);
+            scoreText.x = 10;
+            scoreText.y = 100;
+            app.stage.addChild(scoreText);
+            //END TEXT
+            const endText = new PIXI.Text("You have lost", whiteText);
+            endText.x = 10;
+            endText.y = 100;
+            app.stage.addChild(endText);
+
+            //INTERACTION
+            startButton.on('pointerdown', (event) => { 
+                Gscene = "game"
+             });
+             startButton.eventMode = 'static';
+
+             ball.on('pointerdown', (event) => { 
+                if (direction == "nil"){
+                    if (Math.floor(Math.random()) == 0){
+                        direction = "left";
+                    }else{
+                        direction = "right";
+                    }
+                }else if(direction == "left"){
+                    direction = "right";
+                    ballSpeed += .1;
+                    score += 1;
+                }else if(direction == "right"){
+                    direction = "left";
+                    ballSpeed += .1;
+                    score += 1;
+                }
+                
+                
+             });
+             ball.eventMode = 'static';
+
+
+
+            //UPDATE
+            app.ticker.add((delta) => {
+                if (Gscene == "game"){
+                    startText.text = score
+                    startButton.visible = false
+                    ball.visible = true
+                    startText.visible = false
+                    endText.visible = false
+                    scoreText.visible = true
+                    if (direction == "left"){
+                        ball.x -= ballSpeed;
+                    }
+                    if (direction == "right"){
+                        ball.x += ballSpeed;
+                    }
+                    if (ball.x < -170){
+                        Gscene = "end";
+                    }else if (ball.x > 170){
+                        Gscene = "end"
+                    }
+                }else if (Gscene == "start"){
+                    startButton.visible = true
+                    ball.visible = false
+                    startText.visible = true
+                    scoreText.visible = false
+                    endText.visible = false
+                }else if (Gscene == "end"){
+                    startButton.visible = false
+                    ball.visible = false
+                    startText.visible = false
+                    scoreText.visible = false
+                    endText.visible = true
+                }
+                
+            });
+
+            
+            
+
+        </script>
+
+    </body>
+</html>
