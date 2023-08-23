@@ -17,24 +17,29 @@
             let app = new PIXI.Application({ width: 300, height: 500 });
             document.body.appendChild(app.view);
             //MAKING SPRITES, UI, AND TEXT
+            //BACKGROUND
+            let BGC = new PIXI.Graphics();
+            BGC.beginFill(0x79155B);
+            BGC.drawRect(0, 0, 500, 500);
+            app.stage.addChild(BGC)
             //BALL
             let ball = new PIXI.Graphics();
-            ball.beginFill(0xff0000);
+            ball.beginFill(0xF6635C);
             ball.drawCircle(150, 250, 30);
             app.stage.addChild(ball);
             //START BUTTON
             let startButton = new PIXI.Graphics();
-            startButton.beginFill(0xff0000);
+            startButton.beginFill(0xC23373);
             startButton.drawRect(100, 400, 100, 50);
             app.stage.addChild(startButton);
             //START BUTTON
             let endButton = new PIXI.Graphics();
-            endButton.beginFill(0xff0000);
+            endButton.beginFill(0xC23373);
             endButton.drawRect(100, 400, 100, 50);
             app.stage.addChild(endButton);
             //WHITE COLOR 
             const whiteText = new PIXI.TextStyle({
-                fill: ['#ffffff'],
+                fill: ['#FFBA86'],
             });
             //START TEXT
             const startText = new PIXI.Text('Press the button to start', whiteText);
