@@ -13,9 +13,10 @@
             let direction = "nil"
             let ballSpeed = 1
             let score = 0
+            //init
             let app = new PIXI.Application({ width: 300, height: 500 });
             document.body.appendChild(app.view);
-
+            //MAKING SPRITES, UI, AND TEXT
             //BALL
             let ball = new PIXI.Graphics();
             ball.beginFill(0xff0000);
@@ -26,6 +27,11 @@
             startButton.beginFill(0xff0000);
             startButton.drawRect(100, 400, 100, 50);
             app.stage.addChild(startButton);
+            //START BUTTON
+            let endButton = new PIXI.Graphics();
+            endButton.beginFill(0xff0000);
+            endButton.drawRect(100, 400, 100, 50);
+            app.stage.addChild(endButton);
             //WHITE COLOR 
             const whiteText = new PIXI.TextStyle({
                 fill: ['#ffffff'],
@@ -43,15 +49,16 @@
             //END TEXT
             const endText = new PIXI.Text("You have lost", whiteText);
             endText.x = 10;
-            endText.y = 100;
+            endText.y = 50;
             app.stage.addChild(endText);
 
             //INTERACTION
+            //STARTING BUTTON
             startButton.on('pointerdown', (event) => { 
                 Gscene = "game"
              });
              startButton.eventMode = 'static';
-
+             //WHEN BUTTON CLICKED
              ball.on('pointerdown', (event) => { 
                 if (direction == "nil"){
                     if (Math.floor(Math.random()) == 0){
@@ -72,18 +79,26 @@
                 
              });
              ball.eventMode = 'static';
+             //WHEN END BUTTON PRESSED
+             endButton.on("pointerdown", (event) => {
+                Gscene = "start"
+                direction = "nil"
+                ballSpeed = 1
+                score = 0
+                ball.x = 0
+             });
+             endButton.eventMode = 'static';
 
-
-
-            //UPDATE
+            //UPDATE AND SCENE SYSTEM
             app.ticker.add((delta) => {
                 if (Gscene == "game"){
-                    startText.text = score
+                    scoreText.text = score
                     startButton.visible = false
                     ball.visible = true
                     startText.visible = false
                     endText.visible = false
                     scoreText.visible = true
+                    endButton.visible = false
                     if (direction == "left"){
                         ball.x -= ballSpeed;
                     }
@@ -101,12 +116,14 @@
                     startText.visible = true
                     scoreText.visible = false
                     endText.visible = false
+                    endButton.visible = false
                 }else if (Gscene == "end"){
                     startButton.visible = false
                     ball.visible = false
                     startText.visible = false
-                    scoreText.visible = false
+                    scoreText.visible = true
                     endText.visible = true
+                    endButton.visible = true
                 }
                 
             });
